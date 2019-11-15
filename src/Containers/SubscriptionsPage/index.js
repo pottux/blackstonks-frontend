@@ -5,8 +5,8 @@ import "typeface-roboto";
 
 const Wrapper = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: center; 
+  flex-wrap: wrap;
+  justify-content: space-between;
   padding: 0px 48px;
 `
 
@@ -15,8 +15,6 @@ const InfoContainer = styled.div`
   font-size: 20px;
   margin-top: 5em;
   height: 5em;
-  width: 75%;
-
   span{
     display: inline-block;
   }
@@ -25,12 +23,18 @@ const InfoContainer = styled.div`
 const SubInfoContainer = styled.div`
   font-size: 16px;
   color: rgba(0, 0, 0, 0.5)
-  width: 75%;
 
 `
 
-const ButtonContainer = styled.div `
+const ButtonsContainer = styled.div`
   margin-top: 2em;
+  display: flex;
+  flex-wrap: wrap;
+`
+
+const ButtonContainer = styled.div `
+  margin-top: 1em;
+  padding-left: 1.5em;
 `
 
 
@@ -45,6 +49,7 @@ const FrontPage = () => {
       <SubInfoContainer>
         Plan your subscriptions, monthly-acquirable products and more
       </SubInfoContainer>
+      <ButtonsContainer>
       <ButtonContainer>
         <PrimaryButton title={'Spotify Family'} desc={'16.99/m'}/>
       </ButtonContainer>
@@ -54,6 +59,7 @@ const FrontPage = () => {
       <ButtonContainer>
         <PrimaryButton title={'PS Now'} desc={'14.99/m'}/>
       </ButtonContainer>
+      </ButtonsContainer>
     </Wrapper>
   )
 }

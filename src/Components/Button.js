@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const ButtonWrapper = styled.div`
   button{
-    padding: 0 2em 0 1.5em;
+    padding: 0 1em 0 1em;
     height: 2.375em;
     margin: auto;
     display : flex;
@@ -30,6 +30,10 @@ const ButtonWrapper = styled.div`
     border-radius 28px;
   }
 
+  .title: {
+
+  }
+
   .desc{
     padding-left: 0.4em;
     opacity: 60%;
@@ -41,7 +45,7 @@ export const PrimaryButton = (props) => (
     <button 
       className="primary rounded" 
       onClick={props.onClick}>
-        <span>{props.title}</span><span className="desc">{props.desc}</span>
+        <span className="title">{props.title}</span><span className="desc">{props.desc}</span>
     </button>
   </ButtonWrapper>
 )
