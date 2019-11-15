@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const ButtonWrapper = styled.div`
   button{
-    width: 13.125em;
+    padding: 0 2em 0 1.5em;
     height: 2.375em;
     margin: auto;
     display : flex;
@@ -15,6 +15,9 @@ const ButtonWrapper = styled.div`
   .primary {
     background-color: black;
     color: white;
+    -webkit-box-shadow: 10px 10px 114px -44px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 114px -44px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 114px -44px rgba(0,0,0,0.75);
   }
   .secondary {
     background-color: rgba(196, 196, 196, 0.5);
