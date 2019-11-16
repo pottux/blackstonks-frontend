@@ -77,7 +77,6 @@ const DetailsPage = (props) => {
   sorted.map((rating) => {
     values.push({x: rating.date, y: rating.rating})
   })
-  console.log(values)
   return(
     <div>
        <TopView>
