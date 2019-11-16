@@ -62,21 +62,22 @@ const Card = styled.div`
   }
 `
 
-const GraphContainer = styled.div`
-  margin: auto;
-  //border: 1px solid red;
-  .chart{
-    margin :auto;
-  }
+const GraphContainer = styled.div`  
+  
 `
 
 const DetailsPage = (props) => {
-  console.log(props.location.state)
   const transaction = props.location.state;
   let total = 0;
   transaction.expenses.map((expense) => {
     total = Math.abs(expense.amount) + total;
   })
+  const sorted = _.orderBy(transaction.ratings, ['date'],['asc']);
+  const values = [];
+  sorted.map((rating) => {
+    values.push({x: rating.date, y: rating.rating})
+  })
+  console.log(values)
   return(
     <div>
        <TopView>
@@ -100,24 +101,16 @@ const DetailsPage = (props) => {
       </TopView>
       <GraphContainer>
         <XYPlot
-          width={360}
-          height={160}
-          yDomain={[0, 4]}
-          className="chart"
+          width={330}
+          height={180}
+          yDomain={[0, 5]}
           >
           <VerticalGridLines style={{strokeWidth: 1}}  />
           <HorizontalGridLines />
           <LineSeries
-          color="black"
-            data={[
-              {x: 1, y: 3},
-              {x: 2, y: 3},
-              {x: 3, y: 3},
-              {x: 4, y: 2},
-              {x: 5, y: 2},
-              {x: 6, y: 1},
-              {x: 7, y: 1},
-            ]}
+            curve={'curveMonotoneX'}
+            color="black"
+            data={values}
           />
         </XYPlot>
       </GraphContainer>
