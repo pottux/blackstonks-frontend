@@ -3,8 +3,7 @@ import './App.css';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import FrontPage from './Containers/FrontPage';
 import DetailsPage from './Containers/DetailsPage'
-import SavingsPage from './Containers/SavingsPage';
-import { getExpenses, postRating } from './services/requests'
+import ReoccurringExpensesPage from './Containers/ReoccurringExpensesPage';
 
 const App = () => (
   <>
@@ -23,7 +22,7 @@ const App = () => (
       </div> */}
       <Switch>
         <Route exact path="/" component={FrontPage} />
-        <Route exact path="/subscriptions" component={SavingsPage} />
+        <Route exact path="/subscriptions" component={ReoccurringExpensesPage} />
         <Route exact path="/details" component={DetailsPage} />
       </Switch>
     </Router>

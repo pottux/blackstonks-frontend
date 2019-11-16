@@ -76,18 +76,11 @@ const StonksNumber = styled.div`
     font-weight: 300;
   }
 `
+const RateSubscriptions = styled.div`
+  
+`
 
-const mockData = [
-  {name: 'Spotify Family', category: 'music', amount: 16.99, active: true},
-  {name: 'Netflix', category: 'streaming', amount: 12.99, active: true},
-  {name: 'HBO', category: 'streaming', amount: 9.99, active: true},
-  {name: 'One average lunch/week',  category: 'food', amount: 44, active: true},
-  {name: 'Amazon Prime', category: 'streaming', amount: 8.99, active: true},
-  {name: 'ViaPlay', category: 'streaming',amount: 10.99, active: true},
-  {name: 'CMore + Sport',  category: 'streaming', amount: 22.99, active: true},
-]
-
-const SavingsPage = () => {
+const ReoccurringExpensesPage = () => {
 
   const [total, setTotal] = useState(0);
   const [recurringPayments, setRecurringPayments] = useState(null);
@@ -105,10 +98,8 @@ const SavingsPage = () => {
   }
 
   const calculateTotal = (data) => {
-    console.log('run calculate total')
     let amount = 0;
     data.map((element) => {
-      console.log(element.amount, total)
       amount = amount + Math.abs(element.amount);
     })
     setTotal(amount)
@@ -139,6 +130,7 @@ const SavingsPage = () => {
       <HeaderContainer>
         <MainHeader>Your current spendings</MainHeader>
         <StonksNumber><span>{total.toFixed(2)}€</span><span className="explanation">per month</span></StonksNumber>
+      {/* TÄHÄN SE HELVETIN KARUSELLI */}
         <Header>Subscriptions</Header>
         <Ingress>
           How do you feel about these reoccuring expenses. Do you find them useful?
@@ -159,4 +151,4 @@ const SavingsPage = () => {
   )
 }
 
-export default SavingsPage;
+export default ReoccurringExpensesPage;
