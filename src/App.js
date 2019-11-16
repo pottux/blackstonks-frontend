@@ -9,11 +9,11 @@ const App = () => (
   <>
 
     <Router>
-      <ul>
+  {/*     <ul>
         <li><Link to=''>index</Link></li>
         <li><Link to='/subscriptions'>subscriptions</Link></li>
         <li><Link to='/subscriptions2'>subscriptions2</Link></li>
-      </ul>
+      </ul> */}
       <Switch>
         <Route exact path="/" component={FrontPage} />
         <Route exact path="/subscriptions" component={SubscriptionsPage} />
