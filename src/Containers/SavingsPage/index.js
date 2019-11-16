@@ -138,7 +138,7 @@ const SavingsPage = () => {
       )}
       <HeaderContainer>
         <MainHeader>Your current spendings</MainHeader>
-        <StonksNumber><span>{total}€</span><span className="explanation">per month</span></StonksNumber>
+        <StonksNumber><span>{total.toFixed(2)}€</span><span className="explanation">per month</span></StonksNumber>
         <Header>Subscriptions</Header>
         <Ingress>
           How do you feel about these reoccuring expenses. Do you find them useful?
