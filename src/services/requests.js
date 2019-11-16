@@ -13,3 +13,18 @@ export const getExpenses = () => {
             return error
         });
 }
+
+export const postRating = () => {
+    return axios.post(`${API_URL}/api/ratings`, {
+        name: 'Adobe  Creative Clou',
+        rating: 1
+    })
+        .then(function (response) {
+            console.log(response);
+            return response
+        })
+        .catch(function (error) {
+            console.log(error);
+            return error
+        });
+}
