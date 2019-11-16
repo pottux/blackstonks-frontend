@@ -35,3 +35,12 @@ h1{
   font-size: 32px;
 }
 
+a:link {
+  text-decoration: none;
+  color: black;
+}
+
+a:visited {
+  text-decoration: none;
+  color: black;
+}

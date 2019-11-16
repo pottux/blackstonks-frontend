@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import _ from 'lodash';
 import styled from 'styled-components';
+import { getExpenses, postRating } from '../../services/requests'
 
 const Wrapper = styled.div`
   display: flex;
@@ -87,8 +89,8 @@ const mockData = [
 
 const SavingsPage = () => {
 
-  const [savedAmount, setSavedAmount] = useState(0);
-  const [recurringPayments, setRecurringPayments] = useState(mockData);
+  const [total, setTotal] = useState(0);
+  const [recurringPayments, setRecurringPayments] = useState(null);
   const [notifications, setNotifications] = useState(false)
 
   const calculateNotifications = () => {
@@ -102,33 +104,55 @@ const SavingsPage = () => {
     })
   }
 
-  const calculateTotal = () => {
-    
+  const calculateTotal = (data) => {
+    console.log('run calculate total')
+    let amount = 0;
+    data.map((element) => {
+      console.log(element.amount, total)
+      amount = amount + Math.abs(element.amount);
+    })
+    setTotal(amount)
+  }
+
+  const doFetchExpenses = async () => {
+    const result = await getExpenses();
+    setRecurringPayments(result.data);
   }
   
   useEffect(()=> {
-    calculateTotal();
-    calculateNotifications();
-  }, [mockData])
+    doFetchExpenses()
+  }, [])
+
+  useEffect(() => {
+    console.log('run use effect for recurring payments: ', recurringPayments)
+    if(recurringPayments !== null){
+      calculateTotal(recurringPayments);
+    }
+    
+  }, [recurringPayments])
 
   return(
     <Wrapper>
-      {!notifications && (
+      {notifications && (
         <Notification><span>You have overlapping recurring payments</span></Notification>
       )}
       <HeaderContainer>
         <MainHeader>Your current spendings</MainHeader>
-        <StonksNumber><span>430,00€</span><span className="explanation">per month</span></StonksNumber>
+        <StonksNumber><span>{total}€</span><span className="explanation">per month</span></StonksNumber>
         <Header>Subscriptions</Header>
         <Ingress>
           How do you feel about these reoccuring expenses. Do you find them useful?
         </Ingress>
       </HeaderContainer>
-      {mockData.map((item) => (
+      {recurringPayments && recurringPayments.map((item) => (
         <RecurringPaymentContainer>
           <span className="title">{item.name}</span>
           <span className="amount">{item.amount}€</span>
-          <span className="details">Details</span>
+          <Link to={{ pathname: '/details', state:{
+            ...item
+          }}}>
+            <span className="details">Details</span>  
+          </Link>
         </RecurringPaymentContainer>
       ))}
     </Wrapper>
