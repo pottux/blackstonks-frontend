@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import BlackstonksContext from '../../BlackstonksContext'
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
 import styled from 'styled-components';
@@ -82,8 +83,8 @@ const RateSubscriptions = styled.div`
 
 const ReoccurringExpensesPage = () => {
 
-  const [total, setTotal] = useState(0);
-  const [recurringPayments, setRecurringPayments] = useState(null);
+  const { recurringPayments } = useContext(BlackstonksContext)
+  const [total, setTotal] = useState(0)
   const [notifications, setNotifications] = useState(false)
 
   const calculateNotifications = () => {
@@ -104,15 +105,6 @@ const ReoccurringExpensesPage = () => {
     })
     setTotal(amount)
   }
-
-  const doFetchExpenses = async () => {
-    const result = await getExpenses();
-    setRecurringPayments(result.data);
-  }
-  
-  useEffect(()=> {
-    doFetchExpenses()
-  }, [])
 
   useEffect(() => {
     console.log('run use effect for recurring payments: ', recurringPayments)
@@ -140,7 +132,7 @@ const ReoccurringExpensesPage = () => {
         <RecurringPaymentContainer>
           <span className="title">{item.name}</span>
           <span className="amount">{item.amount}€</span>
-          <Link to={{ pathname: `/details/${item.name.replace(/ /g, '_')}`, state:{
+          <Link to={{ pathname: `/details/${item.name}`, state:{
             ...item
           }}}>
             <span className="details">Details</span>  
