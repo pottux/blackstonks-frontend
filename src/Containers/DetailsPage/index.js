@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import {XYPlot, XAxis, YAxis, HorizontalGridLines, VerticalGridLines, LineSeries} from 'react-vis';
+import React, { useState, useEffect, useContext } from 'react';
+import BlackstonksContext from '../../BlackstonksContext'
+import { XYPlot, XAxis, YAxis, HorizontalGridLines, VerticalGridLines, LineSeries } from 'react-vis';
 import _ from 'lodash';
 import styled from 'styled-components';
 
@@ -67,19 +68,25 @@ const GraphContainer = styled.div`
 `
 
 const DetailsPage = (props) => {
-  const transaction = props.location.state;
-  let total = 0;
-  transaction.expenses.map((expense) => {
-    total = Math.abs(expense.amount) + total;
-  })
-  const sorted = _.orderBy(transaction.ratings, ['date'],['asc']);
-  const values = [];
-  sorted.map((rating) => {
-    values.push({x: rating.date, y: rating.rating})
-  })
-  return(
+  const { recurringPayments } = useContext(BlackstonksContext)
+
+  if (!recurringPayments) {
+    return <div/>
+  }
+
+  const transaction = recurringPayments.find(p => p.name === props.id)
+  const total = transaction.expenses.reduce((ac, curr) => (
+    ac - curr.amount
+  ), 0)
+  const sorted = _.orderBy(transaction.ratings, ['date'], ['asc']);
+  const values = sorted.map(r => ({
+    x: r.date,
+    y: r.rating
+  }))
+
+  return (
     <div>
-       <TopView>
+      <TopView>
         <Card>
           <span className="title">{transaction.name}</span>
           <div className="row">
@@ -103,8 +110,8 @@ const DetailsPage = (props) => {
           width={330}
           height={180}
           yDomain={[0, 5]}
-          >
-          <VerticalGridLines style={{strokeWidth: 1}}  />
+        >
+          <VerticalGridLines style={{ strokeWidth: 1 }} />
           <HorizontalGridLines />
           <LineSeries
             curve={'curveMonotoneX'}
