@@ -324,7 +324,7 @@ const ReoccurringExpensesPage = () => {
                   <span className="text">monthly</span>
                   <span className="number">{recurringPayments
                     && recurringPayments.find(x => x.name === name)
-                    && Math.abs(recurringPayments.find(x => x.name === name).amount.toFixed(2))}€</span>
+                    && Math.abs(recurringPayments.find(x => x.name === name).amount).toFixed(2)}€</span>
                 </div>
                 <div>
                   <span className="text">yearly</span>
