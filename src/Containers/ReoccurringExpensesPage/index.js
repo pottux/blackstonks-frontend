@@ -306,7 +306,7 @@ const ReoccurringExpensesPage = () => {
       {renderModal && nameInRating && <BadStonksModal item={recurringPayments.filter((payment) => payment.name === nameInRating)[0]} onClick={closeModal} /> }
       <HeaderContainer>
         <MainHeader>Your current spendings</MainHeader>
-        <StonksNumber><span>{total.toFixed(2)}€</span></StonksNumber>
+        <StonksNumber><span>{total.toFixed(2)}€</span><span className="explanation">per month</span></StonksNumber>
         <div className="line"></div>
         <RateSubscriptions>
           <span className="title">Rate subscriptions</span>
