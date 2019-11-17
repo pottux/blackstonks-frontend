@@ -13,7 +13,6 @@ const App = () => {
 
   const doFetchExpenses = async () => {
     const result = await getExpenses()
-    console.log(result)
     setRecurringPayments(result.data)
   }
   
