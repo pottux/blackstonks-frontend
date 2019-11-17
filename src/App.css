@@ -5,6 +5,11 @@ body{
 .App {
   font-family: 'Roboto', 'sans-serif';
   text-align: center;
+  overflow-x:hidden;
+  width:100%;
+  position:relative;
+  top:7vh;
+  height:53vh;
 }
 
 .App-logo {
