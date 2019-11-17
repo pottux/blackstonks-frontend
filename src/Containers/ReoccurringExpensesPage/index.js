@@ -7,9 +7,16 @@ import { getExpenses, postRating } from '../../services/requests'
 import BadStonksModal from './BadStonksModal';
 
 const Wrapper = styled.div`
+
+  .line{
+    width: 100%;
+    background-color: #E9E9E9;
+    height: 1px;
+    margin-bottom: 2em;
+  }
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  padding: 4em 2em;
 `
 
 const Notification = styled.div`
@@ -37,7 +44,7 @@ const RecurringPaymentContainer = styled.div`
   }
 
   .section1{
-    width: 40%;
+    width: 45%;
   }
 
   .section2{
@@ -139,7 +146,8 @@ const Ingress = styled.div`
 const StonksNumber = styled.div`
   font-size: 48px;
   margin-top: 0.8em;
-  margin-bottom: 1em;
+  margin-bottom: 0.5em;
+  font-weight: 300;
 
   .explanation {
     font-size: 14px;
@@ -153,6 +161,8 @@ const RateSubscriptions = styled.div`
   .title{
     display:inline-block;
     width: 100%;
+    font-size: 20px;
+    font-weight: 300;
   }
 
   .info{
@@ -160,6 +170,7 @@ const RateSubscriptions = styled.div`
     font-weight: 300;
     margin-top: 1em;
     margin-bottom: 1.5em;
+    width: 80%;
   }
 
 `
@@ -295,7 +306,12 @@ const ReoccurringExpensesPage = () => {
       {renderModal && nameInRating && <BadStonksModal item={recurringPayments.filter((payment) => payment.name === nameInRating)[0]} onClick={closeModal} /> }
       <HeaderContainer>
         <MainHeader>Your current spendings</MainHeader>
-        <StonksNumber><span>{total.toFixed(2)}€</span><span className="explanation">per month</span></StonksNumber>
+        <StonksNumber><span>{total.toFixed(2)}€</span></StonksNumber>
+        <div className="line"></div>
+        <RateSubscriptions>
+          <span className="title">Rate subscriptions</span>
+          <span className="info">These are some of the upcoming subscriptions. Rate them based on usage to get better suggestions</span>
+        </RateSubscriptions>
         {toBeRated.length > 0 &&
           <CarouselContainer>
             {toBeRated.map(name => (
@@ -305,13 +321,13 @@ const ReoccurringExpensesPage = () => {
                   <span className="text">monthly</span>
                   <span className="number">{recurringPayments 
                     && recurringPayments.find(x => x.name === name) 
-                    && recurringPayments.find(x => x.name === name).amount.toFixed(2)}€</span>
+                    && Math.abs(recurringPayments.find(x => x.name === name).amount.toFixed(2))}€</span>
                 </div>
                 <div>
                   <span className="text">yearly</span>
                   <span className="number">{recurringPayments 
                     && recurringPayments.find(x => x.name === name) 
-                    && (12*recurringPayments.find(x => x.name === name).amount).toFixed(2)}€</span>
+                    && Math.abs((12*recurringPayments.find(x => x.name === name).amount).toFixed(2))}€</span>
                 </div>
                 <Hr />
                 <div className="buttonContainer">
