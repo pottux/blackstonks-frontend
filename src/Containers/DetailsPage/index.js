@@ -128,7 +128,37 @@ const Card = styled.div`
 `
 
 const GraphContainer = styled.div`  
-  
+  margin-top: 2em;
+  padding: 0 2em;
+
+  .graph-title {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 130%;
+    margin-left: 1em;
+  }
+
+  .graph {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1em;
+  }
+`
+const Scale = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-bottom: 2.2em;
+
+  .scale-item {
+    border-radius: 15px;
+    background-color: #0A042D;
+    color: #FFFFFF;
+    padding: 5px 0;
+    width: 60px;
+    text-align: center;
+  }
 `
 
 const DetailsPage = (props) => {
@@ -148,7 +178,7 @@ const DetailsPage = (props) => {
     y: r.rating
   }))
 
-  const myData = [{angle: 1, color: 'black'}, {angle: 2, color: '#F3F3F3'}]
+  const myData = [{ angle: 1, color: 'black' }, { angle: 2, color: '#F3F3F3' }]
 
   return (
     <div>
@@ -178,7 +208,7 @@ const DetailsPage = (props) => {
               radius={17}
               margin={0}
               colorType="literal" />
-              <span className="pie-chart-percent">15 %</span>
+            <span className="pie-chart-percent">15 %</span>
           </div>
         </Card>
       </TopView>
@@ -188,22 +218,32 @@ const DetailsPage = (props) => {
           <p className="tip-content">It seems that you enjoy HBO more than Netflix. Ditching this subscription in favor of HBO will save you 180€ every year</p>
         </TipCard>
         <GraphContainer>
-          <XYPlot
-            width={330}
-            height={180}
-            yDomain={[0, 5]}
-          >
-            <VerticalGridLines style={{ strokeWidth: 1 }} />
-            <HorizontalGridLines />
-            <LineSeries
-              curve={'curveMonotoneX'}
-              color="black"
-              data={values}
-            />
-          </XYPlot>
+          <span className="graph-title">Satisfaction</span>
+          <div className="graph">
+            <Scale>
+              <span className="scale-item">Great</span>
+              <span className="scale-item">Good</span>
+              <span className="scale-item">Meh</span>
+              <span className="scale-item">Bad</span>
+            </Scale>
+            <XYPlot
+              width={300}
+              height={200}
+              yDomain={[0, 5]}
+              margin={{ left: 40, right: 10, top: 10, bottom: 40 }}
+            >
+              <VerticalGridLines style={{ strokeWidth: 1 }} />
+              <HorizontalGridLines />
+              <LineSeries
+                curve={'curveMonotoneX'}
+                color="black"
+                data={values}
+              />
+            </XYPlot>
+          </div>
         </GraphContainer>
       </BottomView>
-    </div>
+    </div >
 
   )
 }
