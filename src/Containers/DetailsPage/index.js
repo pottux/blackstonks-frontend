@@ -359,7 +359,7 @@ const DetailsPage = (props) => {
               <span className="scale-item">Bad</span>
             </Scale>
             <XYPlot
-              width={300}
+              width={280}
               height={200}
               yDomain={[0, 5]}
               margin={{ left: 40, right: 10, top: 10, bottom: 40 }}
