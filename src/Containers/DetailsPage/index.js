@@ -138,7 +138,7 @@ const DetailsPage = (props) => {
   return (
     <div>
       <TopView>
-        <BackLink><Link className="back-link" to='/subscriptions'>Back</Link></BackLink>
+        <BackLink><Link className="back-link" to='/'>Back</Link></BackLink>
         <Card>
           <span className="title">{transaction.name}</span>
           <div className="row">
@@ -158,25 +158,25 @@ const DetailsPage = (props) => {
         </Card>
       </TopView>
       <BottomView>
-      <TipCard>
-      <span className="tip-title">POTENTIAL SAVINGS</span>
-      <p className="tip-content">It seems that you enjoy HBO more than Netflix. Ditching this subscription in favor of HBO will save you 180€ every year</p>
-      </TipCard>
-      <GraphContainer>
-        <XYPlot
-          width={330}
-          height={180}
-          yDomain={[0, 5]}
-        >
-          <VerticalGridLines style={{ strokeWidth: 1 }} />
-          <HorizontalGridLines />
-          <LineSeries
-            curve={'curveMonotoneX'}
-            color="black"
-            data={values}
-          />
-        </XYPlot>
-      </GraphContainer>
+        <TipCard>
+          <span className="tip-title">POTENTIAL SAVINGS</span>
+          <p className="tip-content">It seems that you enjoy HBO more than Netflix. Ditching this subscription in favor of HBO will save you 180€ every year</p>
+        </TipCard>
+        <GraphContainer>
+          <XYPlot
+            width={330}
+            height={180}
+            yDomain={[0, 5]}
+          >
+            <VerticalGridLines style={{ strokeWidth: 1 }} />
+            <HorizontalGridLines />
+            <LineSeries
+              curve={'curveMonotoneX'}
+              color="black"
+              data={values}
+            />
+          </XYPlot>
+        </GraphContainer>
       </BottomView>
     </div>
 

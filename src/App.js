@@ -36,8 +36,7 @@ const App = () => {
       </div> */}
       <BlackstonksContext.Provider value={{ recurringPayments }}>
         <Switch>
-          <Route exact path="/" component={FrontPage} />
-          <Route exact path="/subscriptions" component={ReoccurringExpensesPage} />
+          <Route exact path="/" component={ReoccurringExpensesPage} />
           <Route path="/details/:id" render={({ match }) => <DetailsPage id={match.params.id} />} />
         </Switch>
         </BlackstonksContext.Provider>
