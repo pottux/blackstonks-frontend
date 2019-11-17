@@ -229,19 +229,18 @@ const Card = styled.div`
 
 const GraphContainer = styled.div`  
   margin-top: 2em;
-  padding: 0 1em;
+  padding: 0 2em;
 
   .graph-title {
     font-style: normal;
     font-weight: normal;
     font-size: 20px;
     line-height: 130%;
-    margin-left: 1em;
   }
 
   .graph {
     display: flex;
-    justify-content: space-between;
+    align-items: strech;
     margin-top: 1em;
   }
 `
@@ -267,12 +266,9 @@ const Scale = styled.div`
   margin-bottom: 2.2em;
 
   .scale-item {
-    border-radius: 15px;
-    background-color: #0A042D;
-    color: #FFFFFF;
-    padding: 5px 0;
-    width: 60px;
-    text-align: center;
+    opacity: 0.50;
+    color: #000000;
+    text-align: left;
   }
 `
 
@@ -359,10 +355,10 @@ const DetailsPage = (props) => {
               <span className="scale-item">Bad</span>
             </Scale>
             <XYPlot
-              width={280}
-              height={200}
-              yDomain={[0, 5]}
-              margin={{ left: 40, right: 10, top: 10, bottom: 40 }}
+              width={320}
+              height={250}
+              yDomain={[1, 4]}
+              margin={{ left: 12, right: 10, top: 10, bottom: 40 }}
             >
               <VerticalGridLines style={{ strokeWidth: 1 }} />
               <HorizontalGridLines />
