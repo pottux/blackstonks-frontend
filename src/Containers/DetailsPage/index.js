@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom'
 import BlackstonksContext from '../../BlackstonksContext'
-import { XYPlot, XAxis, YAxis, HorizontalGridLines, VerticalGridLines, LineSeries } from 'react-vis';
+import { XYPlot, XAxis, YAxis, HorizontalGridLines, VerticalGridLines, LineSeries, RadialChart } from 'react-vis';
 import _ from 'lodash';
 import styled from 'styled-components';
 import arrow from '../../static/back.svg';
@@ -50,7 +50,6 @@ const TipCard = styled.div`
     font-style: normal;
     font-weight: normal;
     line-height: 24px;
-    width: 100%;
     display: block;
     margin-bottom: 1.5em;
   }
@@ -71,16 +70,16 @@ const Card = styled.div`
   -webkit-box-shadow: 10px 16px 32px -30px rgba(0,0,0,0.52);
   -moz-box-shadow: 10px 16px 32px -30px rgba(0,0,0,0.52);
   box-shadow: 10px 16px 32px -30px rgba(0,0,0,0.52);
-  padding: 1.5em 1em 0 1em;
+  padding: 1.5em 1em 1em 1em;
   .title{
     font-size: 24px;
     font-weight: 300;
     width: 100%;
     display: block;
-    margin-bottom: 0.4em;
+    margin-bottom: 0.6em;
   } 
   .row {
-    margin-bottom: 0.6em;
+    margin-bottom: 0.7em;
     min-height: 1em;
   }
   .per-something{
@@ -94,6 +93,7 @@ const Card = styled.div`
   .amount{
     display: block;
     float: right;
+    font-size: 20px;
     font-weight: 700;
   
   }
@@ -106,11 +106,24 @@ const Card = styled.div`
     margin-bottom: 1em;
   }
 
+  .pie-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
   .pie-chart-explanation{
+    flex-grow: 2;
     font-size: 16px;
+    line-height: 16px;
     font-weight: 300;
-    display: inline-block;
-    margin-bottom: 1em;
+  }
+
+  .pie-chart-percent{
+    font-size: 16px;
+    line-height: 16px;
+    font-weight: 500;
+    margin-left: 0.5em;
   }
 `
 
@@ -135,6 +148,8 @@ const DetailsPage = (props) => {
     y: r.rating
   }))
 
+  const myData = [{angle: 1, color: 'black'}, {angle: 2, color: '#F3F3F3'}]
+
   return (
     <div>
       <TopView>
@@ -154,7 +169,17 @@ const DetailsPage = (props) => {
             <span className="amount">{`${total.toFixed(2)}€`}</span>
           </div>
           <div className="line"></div>
-          <span className="pie-chart-explanation">Part in entertainment</span>
+          <div className="pie-container">
+            <span className="pie-chart-explanation">Part in entertainment</span>
+            <RadialChart
+              data={myData}
+              width={36}
+              height={36}
+              radius={17}
+              margin={0}
+              colorType="literal" />
+              <span className="pie-chart-percent">15 %</span>
+          </div>
         </Card>
       </TopView>
       <BottomView>
