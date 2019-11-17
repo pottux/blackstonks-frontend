@@ -43,6 +43,9 @@ const RecurringPaymentContainer = styled.div`
     display: inline-block;
   }
 
+  p{
+    opacity: 80%;
+  }
   .section1{
     width: 45%;
   }
@@ -173,6 +176,7 @@ const RateSubscriptions = styled.div`
 
 const CarouselContainer = styled.div`
   margin: 0 -20px;
+  margin-bottom: 32px;
   display: block;
   overflow: auto;
   white-space: nowrap;
@@ -182,10 +186,10 @@ const CarouselContainer = styled.div`
 `
 
 const CarouselCard = styled.div`
-  border-radius: 20px;
+  border-radius: 12px;
   display: inline-block;
   width: 70%;
-  padding: 24px;
+  padding: 20px;
   margin: 0 15px;
   background-color: #F2F2F2;
 
@@ -197,7 +201,7 @@ const CarouselCard = styled.div`
   }
 
   div {
-    margin-top: 10px;
+    margin-top: 12px;
     display: flex;
     justify-content: space-between;
   }
@@ -213,6 +217,7 @@ const CarouselCard = styled.div`
   }
 
   .buttonContainer {
+    margin-top: 20px;
     display:flex;
     justify-content: space-between;
   }
@@ -234,6 +239,7 @@ const CarouselCard = styled.div`
 
 const Hr = styled.hr`
   opacity: 0.3;
+  margin: 12px 0;
 `
 
 const ReoccurringExpensesPage = () => {
@@ -277,7 +283,12 @@ const ReoccurringExpensesPage = () => {
     setToBeRated(toBeRated.filter(x => x !== name))
     if(rating === 1 || rating === 2) {
       setNameInRating(name);
-      setRenderModal(true);
+      setRenderModal(true); 
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
+      });
     }
   }
 
@@ -285,14 +296,6 @@ const ReoccurringExpensesPage = () => {
     setRenderModal(false);
     setNameInRating(null);
   }
-
-  if(recurringPayments){
-    console.log('recur test')
-      console.log(recurringPayments)
-  console.log(recurringPayments.filter((e) => e.name === 'Spotify'))
-  }
-
-  console.log(toBeRated)
 
   return (
     <Wrapper>
@@ -334,10 +337,8 @@ const ReoccurringExpensesPage = () => {
                 </div>
             </CarouselCard>))}
           </CarouselContainer>}
+          <Hr />
         <Header>Subscriptions</Header>
-        <Ingress>
-          How do you feel about these reoccuring expenses. Do you find them useful?
-        </Ingress>
       </HeaderContainer>
       {recurringPayments && recurringPayments.map((item) => (
         <Link to={{ pathname: `/details/${item.name}`, state:{
