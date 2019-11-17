@@ -17,13 +17,11 @@ const TypeContainer = styled.div`
 
 const DarkText = styled.p`
     margin: 0;
-    font-family: Roboto;
     font-size: 16px;
 `
 
 const LightText = styled.p`
     margin: 0;
-    font-family: Roboto;
     font-size: 16px;
     opacity: 0.5;
 `

@@ -59,6 +59,10 @@ const TipCard = styled.div`
     margin: 0;
     padding: 0 0.3em;
   }
+
+  .bold {
+    font-weight: bold;
+  }
 `
 
 const Card = styled.div`
@@ -161,6 +165,22 @@ const Scale = styled.div`
   }
 `
 
+const texts = {
+  1: {
+    rating: "Based on your previous ratings of this service, it seems like you're not really enjoying it. Maybe you could pause the subscription?",
+    category: "It seems like you already have a high number of services in this category. Maybe you could pause the subscription?"
+  },
+  2: {
+    rating: "Based on your previous ratings of this service, you seem to be enjoying it somewhat.",
+    category: "It seems like you are enjoying this service, but you have more preferred ones in this category already."
+  },
+  3: {
+    rating: "It seems like you are really enjoying this service.",
+    category: "It seems like you are really enjoying this service."
+  }
+}
+
+
 const DetailsPage = (props) => {
   const { recurringPayments } = useContext(BlackstonksContext)
 
@@ -178,12 +198,12 @@ const DetailsPage = (props) => {
     y: r.rating
   }))
 
-  const myData = [{ angle: 1, color: 'black' }, { angle: 2, color: '#F3F3F3' }]
+  const myData = [{angle: transaction.part, color: 'black'}, {angle: 1-transaction.part, color: '#F3F3F3'}]
 
   return (
     <div>
       <TopView>
-        <BackLink><Link className="back-link" to='/subscriptions'>Back</Link></BackLink>
+        <BackLink><Link className="back-link" to='/'>Back</Link></BackLink>
         <Card>
           <span className="title">{transaction.name}</span>
           <div className="row">
@@ -200,7 +220,7 @@ const DetailsPage = (props) => {
           </div>
           <div className="line"></div>
           <div className="pie-container">
-            <span className="pie-chart-explanation">Part in entertainment</span>
+            <span className="pie-chart-explanation">Part of {transaction.category} expenses</span>
             <RadialChart
               data={myData}
               width={36}
@@ -208,14 +228,15 @@ const DetailsPage = (props) => {
               radius={17}
               margin={0}
               colorType="literal" />
-            <span className="pie-chart-percent">15 %</span>
+              <span className="pie-chart-percent">{parseInt(100*transaction.part)} %</span>
           </div>
         </Card>
       </TopView>
       <BottomView>
         <TipCard>
-          <span className="tip-title">POTENTIAL SAVINGS</span>
-          <p className="tip-content">It seems that you enjoy HBO more than Netflix. Ditching this subscription in favor of HBO will save you 180€ every year</p>
+          <span className="tip-title">BLACKSTONK'S COMMENTS</span>
+          <p className="tip-content">{texts[transaction.color][transaction.colorByCategory ? 'category' : 'rating']}</p>
+          <p className="tip-content">By pausing the subscription, you could save <span className="bold">{Math.abs(transaction.amount * 12).toFixed(2)}€</span> annually.</p>
         </TipCard>
         <GraphContainer>
           <span className="graph-title">Satisfaction</span>

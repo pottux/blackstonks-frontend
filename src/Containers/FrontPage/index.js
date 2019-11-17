@@ -2,14 +2,12 @@ import React from 'react';
 import { PrimaryButton, SecondaryButton } from '../../Components/Button';
 import CategoryList from '../../Components/CategoryList';
 import styled from 'styled-components';
-import "typeface-roboto";
 
 const Container = styled.div`
   padding: 0px 48px;
 `
 
 const Header = styled.h2`
-  font-family: Roboto;
   text-align: center;
   margin: auto;
   margin-top: 2em;
