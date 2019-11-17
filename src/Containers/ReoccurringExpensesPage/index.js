@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import _ from 'lodash';
 import styled from 'styled-components';
 import { getExpenses, postRating } from '../../services/requests'
+import BadStonksModal from './BadStonksModal';
 
 const Wrapper = styled.div`
   display: flex;
@@ -84,7 +85,8 @@ const ReoccurringExpensesPage = () => {
 
   const [total, setTotal] = useState(0);
   const [recurringPayments, setRecurringPayments] = useState(null);
-  const [notifications, setNotifications] = useState(false)
+  const [notifications, setNotifications] = useState(false);
+  const [renderModal, setRenderModal] = useState(true);
 
   const calculateNotifications = () => {
     console.log('run calculating')
@@ -127,6 +129,7 @@ const ReoccurringExpensesPage = () => {
       {notifications && (
         <Notification><span>You have overlapping recurring payments</span></Notification>
       )}
+      <BadStonksModal />
       <HeaderContainer>
         <MainHeader>Your current spendings</MainHeader>
         <StonksNumber><span>{total.toFixed(2)}€</span><span className="explanation">per month</span></StonksNumber>
