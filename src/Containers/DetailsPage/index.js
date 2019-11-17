@@ -7,6 +7,102 @@ import styled from 'styled-components';
 import arrow from '../../static/back.svg';
 import wallet from '../../static/wallet.svg';
 
+
+const RecurringPaymentContainer = styled.div`
+  display: flex;  
+  flex-wrap: wrap;
+  justify-content: space-between;
+  min-height: 50px;
+  margin-top: 1.3em;
+  background-color: #F5F5F5;
+  padding: 1em;
+  border-radius: 12px;
+  -webkit-box-shadow: 10px 13px 16px -16px rgba(0,0,0,0.75);
+  -moz-box-shadow: 10px 13px 16px -16px rgba(0,0,0,0.75);
+  box-shadow: 10px 13px 16px -16px rgba(0,0,0,0.75);
+
+  span{
+    display: inline-block;
+  }
+
+  .section1{
+    width: 45%;
+  }
+
+  .section2{
+    width: 18%
+  }
+
+  .section3{
+    width: 25%;
+  }
+
+  .title{
+    width: 100%;
+    display: inline-block;
+    font-size: 16px;
+    margin-bottom: 0.6em;
+  }
+
+  .month {
+    width: 100%;
+    opacity: 50%;
+    font-weigth: 300;
+    margin-bottom: 0.3em;
+
+  }
+
+  .year {
+    width: 100%;
+    opacity: 50%;
+    font-weigth: 300;
+    margin-bottom: 0.3em; 
+  }
+
+
+  .amount-month{
+    width: 100%;
+    font-weight: 300;
+    font-size: 20px;
+
+  }
+
+  .amount-year{
+    width: 100%;
+    font-weight: 300;
+    font-size: 20px;
+  }
+
+  .rate-container{
+    width: 100%;
+  }
+
+  .status-ball {
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 0.6em;
+  }
+
+  .red {
+    background-color: #E10E0E;
+  }
+
+  .yellow {
+    background-color: #FAA500;
+  }
+
+  .green {
+    background-color: #2ABD0C;
+  }
+
+  .rate{
+    display: inline;
+    font-weigth: 300;
+  }
+`
+
 const TopView = styled.div`
   background-color: rgba(196, 196, 196, 0.2);
   min-height: 14em;
@@ -132,7 +228,52 @@ const Card = styled.div`
 `
 
 const GraphContainer = styled.div`  
-  
+  margin-top: 2em;
+  padding: 0 2em;
+
+  .graph-title {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 130%;
+    margin-left: 1em;
+  }
+
+  .graph {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1em;
+  }
+`
+const CategoryContainer = styled.div`  
+  margin-top: 2em;
+  padding: 0 2em;
+
+  .graph-title {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 130%;
+    margin-left: 1em;
+  }
+
+`
+
+
+const Scale = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-bottom: 2.2em;
+
+  .scale-item {
+    border-radius: 15px;
+    background-color: #0A042D;
+    color: #FFFFFF;
+    padding: 5px 0;
+    width: 60px;
+    text-align: center;
+  }
 `
 
 const texts = {
@@ -168,7 +309,7 @@ const DetailsPage = (props) => {
     y: r.rating
   }))
 
-  const myData = [{angle: transaction.part, color: 'black'}, {angle: 1-transaction.part, color: '#F3F3F3'}]
+  const myData = [{ angle: transaction.part, color: 'black' }, { angle: 1 - transaction.part, color: '#F3F3F3' }]
 
   return (
     <div>
@@ -198,7 +339,7 @@ const DetailsPage = (props) => {
               radius={17}
               margin={0}
               colorType="literal" />
-              <span className="pie-chart-percent">{parseInt(100*transaction.part)} %</span>
+            <span className="pie-chart-percent">{parseInt(100 * transaction.part)} %</span>
           </div>
         </Card>
       </TopView>
@@ -209,22 +350,66 @@ const DetailsPage = (props) => {
           <p className="tip-content">By pausing the subscription, you could save <span className="bold">{Math.abs(transaction.amount * 12).toFixed(2)}€</span> annually.</p>
         </TipCard>
         <GraphContainer>
-          <XYPlot
-            width={330}
-            height={180}
-            yDomain={[0, 5]}
-          >
-            <VerticalGridLines style={{ strokeWidth: 1 }} />
-            <HorizontalGridLines />
-            <LineSeries
-              curve={'curveMonotoneX'}
-              color="black"
-              data={values}
-            />
-          </XYPlot>
+          <span className="graph-title">Satisfaction</span>
+          <div className="graph">
+            <Scale>
+              <span className="scale-item">Great</span>
+              <span className="scale-item">Good</span>
+              <span className="scale-item">Meh</span>
+              <span className="scale-item">Bad</span>
+            </Scale>
+            <XYPlot
+              width={300}
+              height={200}
+              yDomain={[0, 5]}
+              margin={{ left: 40, right: 10, top: 10, bottom: 40 }}
+            >
+              <VerticalGridLines style={{ strokeWidth: 1 }} />
+              <HorizontalGridLines />
+              <LineSeries
+                curve={'curveMonotoneX'}
+                color="black"
+                data={values}
+              />
+            </XYPlot>
+          </div>
         </GraphContainer>
+        <CategoryContainer>
+          <span className="graph-title">Services in same category</span>
+          {recurringPayments && recurringPayments
+            .filter(item => item.category === transaction.category)
+            .filter(item => item.name !== transaction.name).length > 0 ? 
+            recurringPayments
+            .filter(item => item.category === transaction.category)
+            .filter(item => item.name !== transaction.name)
+            .map((item) => (
+            <Link to={{
+              pathname: `/details/${item.name}`, state: {
+                ...item
+              }
+            }}>
+              <RecurringPaymentContainer>
+                <div className="section1">
+                  <span className="title">{item.name}</span>
+                  <div className="rate-container">
+                    <div className={`status-ball ${item.color === 3 ? 'green' : item.color === 2 ? 'yellow' : 'red'}`}></div>
+                    <div className="rate">– {item.color === 3 ? 'solid choice' : item.color === 2 ? 'questionable' : 'redundant'}</div>
+                  </div>
+                </div>
+                <div className="section2">
+                  <span className="month">monthly</span>
+                  <span className="amount-month">{Math.abs(item.amount).toFixed(2)}€</span>
+                </div>
+                <div className="section3">
+                  <span className="year">yearly</span>
+                  <span className="amount-year">{Math.abs(item.amount * 12).toFixed(2)}€</span>
+                </div>
+              </RecurringPaymentContainer>
+            </Link>
+          )) : <p>No other services to display.</p>}
+        </CategoryContainer>
       </BottomView>
-    </div>
+    </div >
 
   )
 }
