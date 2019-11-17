@@ -252,7 +252,7 @@ const ReoccurringExpensesPage = () => {
   const [total, setTotal] = useState(0)
   const [notifications, setNotifications] = useState(false)
   const [renderModal, setRenderModal] = useState(false)
-  const [toBeRated, setToBeRated] = useState(['Netflix', 'Spotify'])
+  const [toBeRated, setToBeRated] = useState(['HBO', 'Spotify'])
   const [nameInRating, setNameInRating] = useState(null);
 
   const calculateNotifications = () => {
