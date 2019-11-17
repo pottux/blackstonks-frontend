@@ -91,10 +91,25 @@ const RecurringPaymentContainer = styled.div`
   .status-ball {
     height: 10px;
     width: 10px;
-    background-color: red;
     border-radius: 50%;
     display: inline-block;
     margin-right: 0.6em;
+  }
+
+  .red {
+    background-color: #E10E0E;
+  }
+
+  .yellow {
+    background-color: #FAA500;
+  }
+
+  .lightgreen {
+    background-color: #C5E309;
+  }
+
+  .green {
+    background-color: #2ABD0C;
   }
 
   .rate{
@@ -320,8 +335,8 @@ const ReoccurringExpensesPage = () => {
             <div className="section1">
               <span className="title">{item.name}</span>
               <div className="rate-container">
-                <div className="status-ball"></div>
-                 <div className="rate">– not worth it</div>
+                <div className={`status-ball ${item.color === 4 ? 'green' : item.color === 3 ? 'lightgreen' : item.color === 2 ? 'yellow' : 'red'}`}></div>
+                 <div className="rate">– {item.color === 4 ? 'solid choice' : item.color === 3 ? 'alright' : item.color === 2 ? 'questionable' : 'redundant'}</div>
               </div>
             </div>
             <div className="section2">
