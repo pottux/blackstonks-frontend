@@ -7,8 +7,7 @@ import { getExpenses, postRating } from '../../services/requests'
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding-top: 2em;
+  padding: 20px;
 `
 
 const Notification = styled.div`
@@ -20,7 +19,6 @@ const Notification = styled.div`
 
 const RecurringPaymentContainer = styled.div`
   height: 50px;
-  width: 80%;
   margin-top: 1.3em;
   background-color: #F5F5F5;
   padding: 1em;
@@ -45,7 +43,6 @@ const RecurringPaymentContainer = styled.div`
 `
 
 const HeaderContainer = styled.div`
-  margin-left: 2.4em;
 `
 const MainHeader = styled.div`
   font-weight: 300;
@@ -80,6 +77,70 @@ const RateSubscriptions = styled.div`
   
 `
 
+const CarouselContainer = styled.div`
+  margin: 0 -20px;
+  display: block;
+  overflow: auto;
+  white-space: nowrap;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+`
+
+const CarouselCard = styled.div`
+  border-radius: 20px;
+  display: inline-block;
+  width: 70%;
+  padding: 24px;
+  margin: 0 15px;
+  background-color: #F2F2F2;
+
+  h1 {
+    font-weight: 300;
+    font-size: 24px;
+    margin: 0;
+    margin-bottom: 8px;
+  }
+
+  div {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .text {
+    font-weight: 300;
+    font-size: 16px;
+  }
+
+  .number {
+    font-weight: 500;
+    font-size: 20px;
+  }
+
+  .buttonContainer {
+    display:flex;
+    justify-content: space-between;
+  }
+
+  .button {
+    border-radius: 15px;
+    background-color: #0A042D;
+    color: #FFFFFF;
+    min-width: 60px;
+    min-height: 30px;
+  }
+
+  .buttonText {
+    font-size: 16px;
+    font-weight: 500;
+  }
+`
+
+const Hr = styled.hr`
+  opacity: 0.3;
+`
+
 const ReoccurringExpensesPage = () => {
 
   const [total, setTotal] = useState(0);
@@ -91,7 +152,7 @@ const ReoccurringExpensesPage = () => {
     const categories = _.groupBy(recurringPayments, 'category');
     console.log(categories)
     Object.keys(categories).map((category) => {
-      if(category.length > 1) {
+      if (category.length > 1) {
         setNotifications(true)
       }
     })
@@ -109,20 +170,20 @@ const ReoccurringExpensesPage = () => {
     const result = await getExpenses();
     setRecurringPayments(result.data);
   }
-  
-  useEffect(()=> {
+
+  useEffect(() => {
     doFetchExpenses()
   }, [])
 
   useEffect(() => {
     console.log('run use effect for recurring payments: ', recurringPayments)
-    if(recurringPayments !== null){
+    if (recurringPayments !== null) {
       calculateTotal(recurringPayments);
     }
-    
+
   }, [recurringPayments])
 
-  return(
+  return (
     <Wrapper>
       {notifications && (
         <Notification><span>You have overlapping recurring payments</span></Notification>
@@ -130,7 +191,62 @@ const ReoccurringExpensesPage = () => {
       <HeaderContainer>
         <MainHeader>Your current spendings</MainHeader>
         <StonksNumber><span>{total.toFixed(2)}€</span><span className="explanation">per month</span></StonksNumber>
-      {/* TÄHÄN SE HELVETIN KARUSELLI */}
+          <CarouselContainer>
+            <CarouselCard>
+              <h1>Netflix family</h1>
+              <div>
+                <span className="text">monthly</span>
+                <span className="number">12.00€</span>
+              </div>
+              <div>
+                <span className="text">yearly</span>
+                <span className="number">144.00€</span>
+              </div>
+              <Hr/>
+              <div className="buttonContainer">
+                <button className="button"><span className="buttonText">Bad</span></button>
+                <button className="button"><span className="buttonText">Bad</span></button>
+                <button className="button"><span className="buttonText">Bad</span></button>
+                <button className="button"><span className="buttonText">Bad</span></button>
+              </div>
+            </CarouselCard>
+            <CarouselCard>
+              <h1>Netflix family</h1>
+              <div>
+                <span className="text">monthly</span>
+                <span className="number">12.00€</span>
+              </div>
+              <div>
+                <span className="text">yearly</span>
+                <span className="number">144.00€</span>
+              </div>
+              <Hr/>
+              <div className="buttonContainer">
+                <button className="button"><span className="buttonText">Bad</span></button>
+                <button className="button"><span className="buttonText">Bad</span></button>
+                <button className="button"><span className="buttonText">Bad</span></button>
+                <button className="button"><span className="buttonText">Bad</span></button>
+              </div>
+            </CarouselCard>
+            <CarouselCard>
+              <h1>Netflix family</h1>
+              <div>
+                <span className="text">monthly</span>
+                <span className="number">12.00€</span>
+              </div>
+              <div>
+                <span className="text">yearly</span>
+                <span className="number">144.00€</span>
+              </div>
+              <Hr/>
+              <div className="buttonContainer">
+                <button className="button"><span className="buttonText">Bad</span></button>
+                <button className="button"><span className="buttonText">Bad</span></button>
+                <button className="button"><span className="buttonText">Bad</span></button>
+                <button className="button"><span className="buttonText">Bad</span></button>
+              </div>
+            </CarouselCard>
+          </CarouselContainer>
         <Header>Subscriptions</Header>
         <Ingress>
           How do you feel about these reoccuring expenses. Do you find them useful?
@@ -140,10 +256,12 @@ const ReoccurringExpensesPage = () => {
         <RecurringPaymentContainer>
           <span className="title">{item.name}</span>
           <span className="amount">{item.amount}€</span>
-          <Link to={{ pathname: '/details', state:{
-            ...item
-          }}}>
-            <span className="details">Details</span>  
+          <Link to={{
+            pathname: '/details', state: {
+              ...item
+            }
+          }}>
+            <span className="details">Details</span>
           </Link>
         </RecurringPaymentContainer>
       ))}
