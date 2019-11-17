@@ -148,7 +148,7 @@ const DetailsPage = (props) => {
     y: r.rating
   }))
 
-  const myData = [{angle: 1, color: 'black'}, {angle: 2, color: '#F3F3F3'}]
+  const myData = [{angle: transaction.part, color: 'black'}, {angle: 1-transaction.part, color: '#F3F3F3'}]
 
   return (
     <div>
@@ -170,7 +170,7 @@ const DetailsPage = (props) => {
           </div>
           <div className="line"></div>
           <div className="pie-container">
-            <span className="pie-chart-explanation">Part in entertainment</span>
+            <span className="pie-chart-explanation">Part of {transaction.category} expenses</span>
             <RadialChart
               data={myData}
               width={36}
@@ -178,7 +178,7 @@ const DetailsPage = (props) => {
               radius={17}
               margin={0}
               colorType="literal" />
-              <span className="pie-chart-percent">15 %</span>
+              <span className="pie-chart-percent">{parseInt(100*transaction.part)} %</span>
           </div>
         </Card>
       </TopView>
