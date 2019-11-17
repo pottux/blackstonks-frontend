@@ -184,7 +184,7 @@ const CarouselContainer = styled.div`
 const CarouselCard = styled.div`
   border-radius: 12px;
   display: inline-block;
-  width: 70%;
+  width: 82%;
   padding: 20px;
   margin: 0 15px;
   background-color: #F2F2F2;
