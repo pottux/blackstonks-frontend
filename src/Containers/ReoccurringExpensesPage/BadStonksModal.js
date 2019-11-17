@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const ModalContainer = styled.div`
@@ -51,9 +52,14 @@ const ModalContainer = styled.div`
 const BadStonksModal = (props) => (
   <ModalContainer>
     <div className='modal'>
+      {console.log(props.item)}
         <div className="modal-content">
           <div className="info-text">You were not happy about this subscription 3 times in a row, maybe you want to cancel it?</div>
-          <button>See the impact</button>
+          <Link to={{ pathname: `/details/${props.item.name}`, state:{
+          ...props.item
+          }}}>
+          <button onClick={props.onClick}>See the impact</button>
+        </Link>
         </div>
       </div>
       <div className="modal-overlay" id="modal-overlay"></div>
