@@ -244,8 +244,8 @@ const ReoccurringExpensesPage = () => {
           How do you feel about these reoccuring expenses. Do you find them useful?
         </Ingress>
       </HeaderContainer>
-      {recurringPayments && recurringPayments.map((item) => (
-        <RecurringPaymentContainer>
+      {recurringPayments && recurringPayments.map((item, k) => (
+        <RecurringPaymentContainer key={k}>
           <span className="title">{item.name}</span>
           <span className="amount">{item.amount}€</span>
           <Link to={`/details/${item.name}`}>
