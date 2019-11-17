@@ -229,7 +229,7 @@ const Card = styled.div`
 
 const GraphContainer = styled.div`  
   margin-top: 2em;
-  padding: 0 2em;
+  padding: 0 1em;
 
   .graph-title {
     font-style: normal;
@@ -247,7 +247,7 @@ const GraphContainer = styled.div`
 `
 const CategoryContainer = styled.div`  
   margin-top: 2em;
-  padding: 0 2em;
+  padding: 0 1em;
 
   .graph-title {
     font-style: normal;
