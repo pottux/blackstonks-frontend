@@ -248,9 +248,7 @@ const ReoccurringExpensesPage = () => {
         <RecurringPaymentContainer>
           <span className="title">{item.name}</span>
           <span className="amount">{item.amount}€</span>
-          <Link to={{ pathname: `/details/${item.name}`, state:{
-            ...item
-          }}}>
+          <Link to={`/details/${item.name}`}>
             <span className="details">Details</span>  
           </Link>
         </RecurringPaymentContainer>
