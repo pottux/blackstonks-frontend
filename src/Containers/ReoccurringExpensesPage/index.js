@@ -133,13 +133,9 @@ const MainHeader = styled.div`
 `
 
 const Header = styled.h2`
+  margin-top: 40px;
   font-weight: 300;
   font-size: 20px;
-`
-
-const Ingress = styled.div`
-  width: 60%;
-  font-weight: 300;
 `
 
 const StonksNumber = styled.div`
@@ -234,7 +230,15 @@ const CarouselCard = styled.div`
     font-size: 16px;
     font-weight: 500;
   }
+`
 
+const CategoryText = styled.p`
+  margin: 0;
+  margin-top: 25px;
+  margin-bottom: 5px;
+  font-size: 20px;
+  font-weight: bold;
+  opacity: 0.4;
 `
 
 const Hr = styled.hr`
@@ -278,10 +282,10 @@ const ReoccurringExpensesPage = () => {
 
   }, [recurringPayments])
 
-  const handlePostRating = (name, rating)  => {
+  const handlePostRating = (name, rating) => {
     postRating(name, rating)
     setToBeRated(toBeRated.filter(x => x !== name))
-    if(rating === 1 || rating === 2) {
+    if (rating === 1 || rating === 2) {
       setNameInRating(name);
       setRenderModal(true); 
       window.scrollTo({
@@ -292,7 +296,7 @@ const ReoccurringExpensesPage = () => {
     }
   }
 
-  const closeModal= () => {
+  const closeModal = () => {
     setRenderModal(false);
     setNameInRating(null);
   }
@@ -302,7 +306,7 @@ const ReoccurringExpensesPage = () => {
       {notifications && (
         <Notification><span>You have overlapping recurring payments</span></Notification>
       )}
-      {renderModal && nameInRating && <BadStonksModal item={recurringPayments.filter((payment) => payment.name === nameInRating)[0]} onClick={closeModal} /> }
+      {renderModal && nameInRating && <BadStonksModal item={recurringPayments.filter((payment) => payment.name === nameInRating)[0]} onClick={closeModal} />}
       <HeaderContainer>
         <MainHeader>Your current spendings</MainHeader>
         <StonksNumber><span>{total.toFixed(2)}€</span><span className="explanation">per month</span></StonksNumber>
@@ -318,15 +322,15 @@ const ReoccurringExpensesPage = () => {
                 <h1>{name}</h1>
                 <div>
                   <span className="text">monthly</span>
-                  <span className="number">{recurringPayments 
-                    && recurringPayments.find(x => x.name === name) 
+                  <span className="number">{recurringPayments
+                    && recurringPayments.find(x => x.name === name)
                     && Math.abs(recurringPayments.find(x => x.name === name).amount.toFixed(2))}€</span>
                 </div>
                 <div>
                   <span className="text">yearly</span>
-                  <span className="number">{recurringPayments 
-                    && recurringPayments.find(x => x.name === name) 
-                    && Math.abs((12*recurringPayments.find(x => x.name === name).amount).toFixed(2))}€</span>
+                  <span className="number">{recurringPayments
+                    && recurringPayments.find(x => x.name === name)
+                    && Math.abs((12 * recurringPayments.find(x => x.name === name).amount).toFixed(2))}€</span>
                 </div>
                 <Hr />
                 <div className="buttonContainer">
@@ -335,34 +339,48 @@ const ReoccurringExpensesPage = () => {
                   <button className="button" onClick={() => handlePostRating(name, 3)}><span className="buttonText">Good</span></button>
                   <button className="button" onClick={() => handlePostRating(name, 4)}><span className="buttonText">Great</span></button>
                 </div>
-            </CarouselCard>))}
+              </CarouselCard>))}
           </CarouselContainer>}
           <Hr />
         <Header>Subscriptions</Header>
       </HeaderContainer>
-      {recurringPayments && recurringPayments.map((item) => (
-        <Link to={{ pathname: `/details/${item.name}`, state:{
-          ...item
-        }}}>
-          <RecurringPaymentContainer>
-            <div className="section1">
-              <span className="title">{item.name}</span>
-              <div className="rate-container">
-                <div className={`status-ball ${item.color === 3 ? 'green' : item.color === 2 ? 'yellow' : 'red'}`}></div>
-                 <div className="rate">– {item.color === 3 ? 'solid choice' : item.color === 2 ? 'questionable' : 'redundant'}</div>
-              </div>
-            </div>
-            <div className="section2">
-              <span className="month">monthly</span>
-              <span className="amount-month">{Math.abs(item.amount).toFixed(2)}€</span>
-            </div>
-            <div className="section3">
-              <span className="year">yearly</span>
-              <span className="amount-year">{Math.abs(item.amount * 12).toFixed(2)}€</span>  
-            </div>
-          </RecurringPaymentContainer>
-        </Link>
-      ))}
+      {recurringPayments && [...new Set(recurringPayments.map(item => item.category))]
+        .map(x =>
+          <>
+            <CategoryText>{x.toUpperCase()}</CategoryText>
+            {recurringPayments
+              .filter(payment => payment.category === x)
+              .map((item) => (
+                <Link to={{
+                  pathname: `/details/${item.name}`, state: {
+                    ...item
+                  }
+                }}>
+                  <RecurringPaymentContainer>
+                    <div className="section1">
+                      <span className="title">{item.name}</span>
+                      <div className="rate-container">
+                        <div className={`status-ball ${item.color === 3 ? 'green' : item.color === 2 ? 'yellow' : 'red'}`}></div>
+                        <div className="rate">– {item.color === 3 ? 'solid choice' : item.color === 2 ? 'questionable' : 'redundant'}</div>
+                      </div>
+                    </div>
+                    <div className="section2">
+                      <span className="month">monthly</span>
+                      <span className="amount-month">{Math.abs(item.amount).toFixed(2)}€</span>
+                    </div>
+                    <div className="section3">
+                      <span className="year">yearly</span>
+                      <span className="amount-year">{Math.abs(item.amount * 12).toFixed(2)}€</span>
+                    </div>
+                  </RecurringPaymentContainer>
+                </Link>
+              ))}
+        </>
+        )}
+
+
+
+
     </Wrapper>
   )
 }
