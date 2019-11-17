@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import _ from 'lodash';
 import styled from 'styled-components';
 import { getExpenses, postRating } from '../../services/requests'
+import BadStonksModal from './BadStonksModal';
 
 const Wrapper = styled.div`
   display: flex;
@@ -19,7 +20,10 @@ const Notification = styled.div`
 `
 
 const RecurringPaymentContainer = styled.div`
-  height: 50px;
+  display: flex;  
+  flex-wrap: wrap;
+  justify-content: space-between;
+  min-height: 50px;
   margin-top: 1.3em;
   background-color: #F5F5F5;
   padding: 1em;
@@ -28,18 +32,89 @@ const RecurringPaymentContainer = styled.div`
   -moz-box-shadow: 10px 13px 16px -16px rgba(0,0,0,0.75);
   box-shadow: 10px 13px 16px -16px rgba(0,0,0,0.75);
 
+  span{
+    display: inline-block;
+  }
+
+  .section1{
+    width: 40%;
+  }
+
+  .section2{
+    width: 18%
+  }
+
+  .section3{
+    width: 25%;
+  }
+
   .title{
     width: 100%;
     display: inline-block;
-    margin-bottom: 0.6em;
     font-size: 16px;
+    margin-bottom: 0.6em;
   }
-  .amount{
-    font-size: 20px;
+
+  .month {
+    width: 100%;
+    opacity: 50%;
+    font-weigth: 300;
+    margin-bottom: 0.3em;
+
+  }
+
+  .year {
+    width: 100%;
+    opacity: 50%;
+    font-weigth: 300;
+    margin-bottom: 0.3em; 
+  }
+
+
+  .amount-month{
+    width: 100%;
     font-weight: 300;
+    font-size: 20px;
+
   }
-  .details {
-    float: right;
+
+  .amount-year{
+    width: 100%;
+    font-weight: 300;
+    font-size: 20px;
+  }
+
+  .rate-container{
+    width: 100%;
+  }
+
+  .status-ball {
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 0.6em;
+  }
+
+  .red {
+    background-color: #E10E0E;
+  }
+
+  .yellow {
+    background-color: #FAA500;
+  }
+
+  .lightgreen {
+    background-color: #C5E309;
+  }
+
+  .green {
+    background-color: #2ABD0C;
+  }
+
+  .rate{
+    display: inline;
+    font-weigth: 300;
   }
 `
 
@@ -75,7 +150,18 @@ const StonksNumber = styled.div`
   }
 `
 const RateSubscriptions = styled.div`
-  
+  .title{
+    display:inline-block;
+    width: 100%;
+  }
+
+  .info{
+    display: inline-block;
+    font-weight: 300;
+    margin-top: 1em;
+    margin-bottom: 1.5em;
+  }
+
 `
 
 const CarouselContainer = styled.div`
@@ -136,6 +222,7 @@ const CarouselCard = styled.div`
     font-size: 16px;
     font-weight: 500;
   }
+
 `
 
 const Hr = styled.hr`
@@ -147,7 +234,9 @@ const ReoccurringExpensesPage = () => {
   const { recurringPayments } = useContext(BlackstonksContext)
   const [total, setTotal] = useState(0)
   const [notifications, setNotifications] = useState(false)
+  const [renderModal, setRenderModal] = useState(false)
   const [toBeRated, setToBeRated] = useState(['Netflix', 'Spotify'])
+  const [nameInRating, setNameInRating] = useState(null);
 
   const calculateNotifications = () => {
     console.log('run calculating')
@@ -179,13 +268,31 @@ const ReoccurringExpensesPage = () => {
   const handlePostRating = (name, rating)  => {
     postRating(name, rating)
     setToBeRated(toBeRated.filter(x => x !== name))
+    if(rating === 1 || rating === 2) {
+      setNameInRating(name);
+      setRenderModal(true);
+    }
   }
+
+  const closeModal= () => {
+    setRenderModal(false);
+    setNameInRating(null);
+  }
+
+  if(recurringPayments){
+    console.log('recur test')
+      console.log(recurringPayments)
+  console.log(recurringPayments.filter((e) => e.name === 'Spotify'))
+  }
+
+  console.log(toBeRated)
 
   return (
     <Wrapper>
       {notifications && (
         <Notification><span>You have overlapping recurring payments</span></Notification>
       )}
+      {renderModal && nameInRating && <BadStonksModal item={recurringPayments.filter((payment) => payment.name === nameInRating)[0]} onClick={closeModal} /> }
       <HeaderContainer>
         <MainHeader>Your current spendings</MainHeader>
         <StonksNumber><span>{total.toFixed(2)}€</span><span className="explanation">per month</span></StonksNumber>
@@ -220,18 +327,28 @@ const ReoccurringExpensesPage = () => {
           How do you feel about these reoccuring expenses. Do you find them useful?
         </Ingress>
       </HeaderContainer>
-      {recurringPayments && recurringPayments.map((item, k) => (
-        <RecurringPaymentContainer key={k}>
-          <span className="title">{item.name}</span>
-          <span className="amount">{item.amount}€</span>
-          <Link to={{
-            pathname: `/details/${item.name}`, state: {
-              ...item
-            }
-          }}>
-            <span className="details">Details</span>
-          </Link>
-        </RecurringPaymentContainer>
+      {recurringPayments && recurringPayments.map((item) => (
+        <Link to={{ pathname: `/details/${item.name}`, state:{
+          ...item
+        }}}>
+          <RecurringPaymentContainer>
+            <div className="section1">
+              <span className="title">{item.name}</span>
+              <div className="rate-container">
+                <div className={`status-ball ${item.color === 4 ? 'green' : item.color === 3 ? 'lightgreen' : item.color === 2 ? 'yellow' : 'red'}`}></div>
+                 <div className="rate">– {item.color === 4 ? 'solid choice' : item.color === 3 ? 'alright' : item.color === 2 ? 'questionable' : 'redundant'}</div>
+              </div>
+            </div>
+            <div className="section2">
+              <span className="month">monthly</span>
+              <span className="amount-month">{Math.abs(item.amount).toFixed(2)}€</span>
+            </div>
+            <div className="section3">
+              <span className="year">yearly</span>
+              <span className="amount-year">{Math.abs(item.amount * 12).toFixed(2)}€</span>  
+            </div>
+          </RecurringPaymentContainer>
+        </Link>
       ))}
     </Wrapper>
   )
