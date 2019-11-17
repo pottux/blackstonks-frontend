@@ -147,6 +147,7 @@ const ReoccurringExpensesPage = () => {
   const { recurringPayments } = useContext(BlackstonksContext)
   const [total, setTotal] = useState(0)
   const [notifications, setNotifications] = useState(false)
+  const [toBeRated, setToBeRated] = useState(['Netflix', 'Spotify'])
 
   const calculateNotifications = () => {
     console.log('run calculating')
@@ -175,6 +176,11 @@ const ReoccurringExpensesPage = () => {
 
   }, [recurringPayments])
 
+  const handlePostRating = (name, rating)  => {
+    postRating(name, rating)
+    setToBeRated(toBeRated.filter(x => x !== name))
+  }
+
   return (
     <Wrapper>
       {notifications && (
@@ -183,62 +189,32 @@ const ReoccurringExpensesPage = () => {
       <HeaderContainer>
         <MainHeader>Your current spendings</MainHeader>
         <StonksNumber><span>{total.toFixed(2)}€</span><span className="explanation">per month</span></StonksNumber>
+        {toBeRated.length > 0 &&
           <CarouselContainer>
-            <CarouselCard>
-              <h1>Netflix family</h1>
-              <div>
-                <span className="text">monthly</span>
-                <span className="number">12.00€</span>
-              </div>
-              <div>
-                <span className="text">yearly</span>
-                <span className="number">144.00€</span>
-              </div>
-              <Hr/>
-              <div className="buttonContainer">
-                <button className="button"><span className="buttonText">Bad</span></button>
-                <button className="button"><span className="buttonText">Bad</span></button>
-                <button className="button"><span className="buttonText">Bad</span></button>
-                <button className="button"><span className="buttonText">Bad</span></button>
-              </div>
-            </CarouselCard>
-            <CarouselCard>
-              <h1>Netflix family</h1>
-              <div>
-                <span className="text">monthly</span>
-                <span className="number">12.00€</span>
-              </div>
-              <div>
-                <span className="text">yearly</span>
-                <span className="number">144.00€</span>
-              </div>
-              <Hr/>
-              <div className="buttonContainer">
-                <button className="button"><span className="buttonText">Bad</span></button>
-                <button className="button"><span className="buttonText">Bad</span></button>
-                <button className="button"><span className="buttonText">Bad</span></button>
-                <button className="button"><span className="buttonText">Bad</span></button>
-              </div>
-            </CarouselCard>
-            <CarouselCard>
-              <h1>Netflix family</h1>
-              <div>
-                <span className="text">monthly</span>
-                <span className="number">12.00€</span>
-              </div>
-              <div>
-                <span className="text">yearly</span>
-                <span className="number">144.00€</span>
-              </div>
-              <Hr/>
-              <div className="buttonContainer">
-                <button className="button"><span className="buttonText">Bad</span></button>
-                <button className="button"><span className="buttonText">Bad</span></button>
-                <button className="button"><span className="buttonText">Bad</span></button>
-                <button className="button"><span className="buttonText">Bad</span></button>
-              </div>
-            </CarouselCard>
-          </CarouselContainer>
+            {toBeRated.map(name => (
+              <CarouselCard>
+                <h1>{name}</h1>
+                <div>
+                  <span className="text">monthly</span>
+                  <span className="number">{recurringPayments 
+                    && recurringPayments.find(x => x.name === name) 
+                    && recurringPayments.find(x => x.name === name).amount.toFixed(2)}€</span>
+                </div>
+                <div>
+                  <span className="text">yearly</span>
+                  <span className="number">{recurringPayments 
+                    && recurringPayments.find(x => x.name === name) 
+                    && (12*recurringPayments.find(x => x.name === name).amount).toFixed(2)}€</span>
+                </div>
+                <Hr />
+                <div className="buttonContainer">
+                  <button className="button" onClick={() => handlePostRating(name, 1)}><span className="buttonText">Bad</span></button>
+                  <button className="button" onClick={() => handlePostRating(name, 2)}><span className="buttonText">Meh</span></button>
+                  <button className="button" onClick={() => handlePostRating(name, 3)}><span className="buttonText">Good</span></button>
+                  <button className="button" onClick={() => handlePostRating(name, 4)}><span className="buttonText">Great</span></button>
+                </div>
+            </CarouselCard>))}
+          </CarouselContainer>}
         <Header>Subscriptions</Header>
         <Ingress>
           How do you feel about these reoccuring expenses. Do you find them useful?
@@ -248,8 +224,12 @@ const ReoccurringExpensesPage = () => {
         <RecurringPaymentContainer key={k}>
           <span className="title">{item.name}</span>
           <span className="amount">{item.amount}€</span>
-          <Link to={`/details/${item.name}`}>
-            <span className="details">Details</span>  
+          <Link to={{
+            pathname: `/details/${item.name}`, state: {
+              ...item
+            }
+          }}>
+            <span className="details">Details</span>
           </Link>
         </RecurringPaymentContainer>
       ))}

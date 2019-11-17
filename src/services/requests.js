@@ -14,10 +14,10 @@ export const getExpenses = () => {
         });
 }
 
-export const postRating = () => {
+export const postRating = (name, rating) => {
     return axios.post(`${API_URL}/api/ratings`, {
-        name: 'Adobe  Creative Clou',
-        rating: 1
+        name,
+        rating,
     })
         .then(function (response) {
             console.log(response);
