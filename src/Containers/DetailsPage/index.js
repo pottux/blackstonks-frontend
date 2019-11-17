@@ -1,15 +1,65 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { Link } from 'react-router-dom'
 import BlackstonksContext from '../../BlackstonksContext'
 import { XYPlot, XAxis, YAxis, HorizontalGridLines, VerticalGridLines, LineSeries } from 'react-vis';
 import _ from 'lodash';
 import styled from 'styled-components';
+import arrow from '../../static/back.svg';
+import wallet from '../../static/wallet.svg';
 
 const TopView = styled.div`
   background-color: rgba(196, 196, 196, 0.2);
   min-height: 14em;
   height: 40%;
   width: 100%;
-  padding-top: 6em;
+  padding-top: 3.5em;
+  padding-bottom: 2em;
+`
+const BottomView = styled.div`
+  background-color: white;
+  min-height: 14em;
+  height: 40%;
+  width: 100%;
+  padding-top: 3em;
+  padding-bottom: 2em;
+`
+const BackLink = styled.div`
+  margin-bottom: 2em;
+  margin-left: 1.5em;
+  .back-link{
+    background-image: url(${arrow});
+    background-repeat: no-repeat;
+    background-position-y: center;
+    padding-left: 2em;
+  }
+`
+
+const TipCard = styled.div`
+  width: 85%;
+  min-height: 10em;
+  background: #F3F3F3;
+  border-radius: 8px;
+  margin: auto;
+  padding: 1.5em 1em 1em 1em;
+  .tip-title {
+    background-image: url(${wallet});
+    background-repeat: no-repeat;
+    background-position-y: center;
+    padding-left: 3em;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 24px;
+    width: 100%;
+    display: block;
+    margin-bottom: 1.5em;
+  }
+  .tip-content {
+    font-size: 18px;
+    line-height: 135%;
+    margin: 0;
+    padding: 0 0.3em;
+  }
 `
 
 const Card = styled.div`
@@ -44,6 +94,7 @@ const Card = styled.div`
   .amount{
     display: block;
     float: right;
+    font-weight: 700;
   
   }
 
@@ -71,7 +122,7 @@ const DetailsPage = (props) => {
   const { recurringPayments } = useContext(BlackstonksContext)
 
   if (!recurringPayments) {
-    return <div/>
+    return <div />
   }
 
   const transaction = recurringPayments.find(p => p.name === props.id)
@@ -87,24 +138,30 @@ const DetailsPage = (props) => {
   return (
     <div>
       <TopView>
+        <BackLink><Link className="back-link" to='/subscriptions'>Back</Link></BackLink>
         <Card>
           <span className="title">{transaction.name}</span>
           <div className="row">
             <span className="per-something">per month</span>
-            <span className="amount">{Math.abs(transaction.amount).toFixed(2)}</span>
+            <span className="amount">{`${Math.abs(transaction.amount).toFixed(2)}€`}</span>
           </div>
           <div className="row">
             <span className="per-something">per year</span>
-            <span className="amount">{Math.abs(transaction.amount * 12).toFixed(2)}</span>
+            <span className="amount">{`${Math.abs(transaction.amount * 12).toFixed(2)}€`}</span>
           </div>
           <div className="row">
             <span className="per-something">total</span>
-            <span className="amount">{total.toFixed(2)}</span>
+            <span className="amount">{`${total.toFixed(2)}€`}</span>
           </div>
           <div className="line"></div>
           <span className="pie-chart-explanation">Part in entertainment</span>
         </Card>
       </TopView>
+      <BottomView>
+      <TipCard>
+      <span className="tip-title">POTENTIAL SAVINGS</span>
+      <p className="tip-content">It seems that you enjoy HBO more than Netflix. Ditching this subscription in favor of HBO will save you 180€ every year</p>
+      </TipCard>
       <GraphContainer>
         <XYPlot
           width={330}
@@ -120,6 +177,7 @@ const DetailsPage = (props) => {
           />
         </XYPlot>
       </GraphContainer>
+      </BottomView>
     </div>
 
   )
